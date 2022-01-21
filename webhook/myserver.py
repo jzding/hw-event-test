@@ -5,6 +5,7 @@ from io import BytesIO
 from pathlib import Path
 
 # Generate keys first and store them in .pem/ directory
+# PEM pass: redhat
 # openssl req -x509 -newkey rsa:2048 -keyout .pem/key.pem -out .pem/cert.pem -days 365
 
 KEY_DIR = Path.cwd() / '.pem'
