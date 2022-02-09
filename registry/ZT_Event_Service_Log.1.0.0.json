@@ -1,0 +1,39 @@
+{
+    "@odata.type": "#MessageRegistry.v1_3_1.MessageRegistry",
+    "Description": "This registry defines the ZT_Event_Service_Log messages for Redfish",
+    "Id": "ZT_Event_Service_Log.1.0.0",
+    "Language": "en",
+    "Messages": {
+        "Alert": {
+            "Description": "Indicates that a condition exists which requires attention",
+            "Message": "%1 - %2 action was triggered which requires attention, %3",
+            "NumberOfArgs": 4,
+            "ParamTypes": [
+                "string",
+                "string",
+                "string",
+                "string"
+            ],
+            "Resolution": "None",
+            "Severity": "%4"
+        },
+        "Ok": {
+            "Description": "Indicates that a condition exists which requires attention",
+            "Message": "%1 - %2 action was triggered which requires attention, %3",
+            "NumberOfArgs": 4,
+            "ParamTypes": [
+                "string",
+                "string",
+                "string",
+                "string"
+            ],
+            "Resolution": "None",
+            "Severity": "Ok"
+        }
+    },
+    "Name": "ZT_Event_Service_Log Message Registry",
+    "OwningEntity": "ZT",
+    "RegistryPrefix": "ZT_Event_Service_Log",
+    "RegistryVersion": "1.0.0"
+}
+
