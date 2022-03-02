@@ -1,0 +1,10 @@
+apiVersion: metal3.io/v1alpha1
+kind: BMCEventSubscription
+metadata:
+  name: sub-02
+  namespace: bos2kyoung02
+spec:
+  hostName: bos2kyoung02.dev.vz.bos2.lab
+  destination: https://hw-event-proxy-cloud-native-events.apps.mycluster.hub.dev.vz.bos2.lab/webhook
+  context: ""
+
