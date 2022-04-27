@@ -29,7 +29,7 @@ sed -i 's/10.19.28.42/10.46.61.213/' tests/e2e/manifest/secret.yaml
 
 oc apply -f tests/e2e/manifest/secret.yaml -n hw-event-proxy-operator-system
 
-# get example consumer.yaml from this repo
+# get example consumer.yaml from [here](operator)
 oc apply -f consumer.yaml -n hw-event-proxy-operator-system
 
 oc -n hw-event-proxy-operator-system get pods
