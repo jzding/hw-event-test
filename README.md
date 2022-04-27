@@ -1,8 +1,5 @@
 ## Deploy hw-event-proxy using operator
 ```
-#Apply workarond for workload bug 2052586
-patch config.manager.manager.patch
-
 # under hw-event-proxy-operator repo:
 make deploy
 
