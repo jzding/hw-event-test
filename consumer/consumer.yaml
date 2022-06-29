@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: sidecar-consumer-sa
-  namespace: hw-event-proxy-operator-system
+  namespace: openshift-hw-events
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -34,7 +34,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: sidecar-consumer-sa
-  namespace: hw-event-proxy-operator-system
+  namespace: openshift-hw-events
 ---
 apiVersion: v1
 kind: Service
@@ -45,7 +45,7 @@ metadata:
   labels:
     app: consumer-service
   name: consumer-sidecar-service
-  namespace: hw-event-proxy-operator-system
+  namespace: openshift-hw-events
 spec:
   ports:
   - name: metrics
@@ -61,7 +61,7 @@ metadata:
   labels:
     app: consumer
   name: consumer
-  namespace: hw-event-proxy-operator-system
+  namespace: openshift-hw-events
 spec:
   replicas: 1
   selector:
@@ -72,20 +72,11 @@ spec:
       labels:
         app: consumer
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - local
       containers:
       - args:
         - --local-api-addr=127.0.0.1:9089
         - --api-path=/api/cloudNotifications/v1/
-        - --api-addr=127.0.0.1:8089
+        - --api-addr=127.0.0.1:9085
         env:
         - name: NODE_NAME
           valueFrom:
@@ -95,16 +86,16 @@ spec:
           value: HW
         - name: LOG_LEVEL
           value: debug
-        image: quay.io/redhat-cne/cloud-native-event-consumer
-        name: cloud-native-event-consumer
+        image: quay.io/redhat-cne/cloud-event-consumer:release-4.10
+        name: cloud-event-consumer
       - args:
         - --metrics-addr=127.0.0.1:9091
         - --store-path=/store
-        - --transport-host=amqp://router.$(AMQP_NAMESPACE).svc.cluster.local
-        - --api-port=8089
+        - --transport-host=amqp://amq-router.$(AMQP_NAMESPACE).svc.cluster.local
+        - --api-port=9085
         env:
         - name: AMQP_NAMESPACE
-          value: router
+          value: amq-router
         - name: NODE_NAME
           valueFrom:
             fieldRef:
@@ -152,7 +143,7 @@ metadata:
   labels:
     k8s-app: consumer-sidecar-service-monitor
   name: consumer-sidecar-service-monitor
-  namespace: hw-event-proxy-operator-system
+  namespace: openshift-hw-events
 spec:
   endpoints:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
@@ -161,11 +152,11 @@ spec:
     scheme: https
     tlsConfig:
       caFile: /etc/prometheus/configmaps/serving-certs-ca-bundle/service-ca.crt
-      serverName: consumer-sidecar-service.hw-event-proxy-operator-system.svc
-  jobLabel: hw-event-proxy-operator-system
+      serverName: consumer-sidecar-service.openshift-hw-events.svc
+  jobLabel: openshift-hw-events
   namespaceSelector:
     matchNames:
-    - hw-event-proxy-operator-system
+    - openshift-hw-events
   selector:
     matchLabels:
       app: consumer-service
